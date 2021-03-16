@@ -1,0 +1,2 @@
+# Predicting-the-popularity-of-Reddit-posts
+Given a Reddit post, we would like to predict its popularity as measured by the number of upvotes it receives. The amount of upvotes a post receives impacts its visibility on the site. It is therefore important to understand the relative significance of a post’s features on its popularity. We will utilize NLP techniques such as GloVe word embeddings and sentiment classification in addition to post metadata using various Machine Learning models to tackle this problem.
