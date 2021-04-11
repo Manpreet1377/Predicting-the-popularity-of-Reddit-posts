@@ -61,7 +61,7 @@ def extract_data(url):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('Index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -104,8 +104,8 @@ def predict():
     score = xgb.predict(X_test)
     output=round(score[0],2)
     
-    return render_template('index.html', prediction_text="Predicted score for the given Reddit post is: {}".format(output))
-    return render_template("index.html")
+    return render_template('Index.html', prediction_text="Predicted score for the given Reddit post is: {}".format(output))
+    return render_template("Index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
