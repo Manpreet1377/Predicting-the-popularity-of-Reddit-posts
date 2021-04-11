@@ -30,10 +30,10 @@ with open('senti.pkl', "rb") as f:
 #One hot encoding
 with open('encoding.pkl', "rb") as f:
     enc = pickle.load(f)
-    
-#for model Prediction
-xgb_b=xgboost.Booster()
-xgb_b.load_model('xgb.booster')
+
+#Model Loading
+filename = 'xgb.pkl'
+xgb = pickle.load(open(filename, 'rb'))
 
 
 # To get information for the Reddit url
@@ -67,10 +67,11 @@ def home():
 def predict():
     url = str(flask.request.form['url'])
     data = extract_data(url)
-    Title = clean_message(data['Title'][0])
+    Title = clean_message(data['Title'])
+    
     # Converting word2vector
     df_word_token = pd.read_csv('word_token_final.csv')
-    print(' df_word_token loaded')
+    print('df_word_token loaded')
     sys.stdout.flush()
     test_title = []
     for word in Title.split():
@@ -81,7 +82,7 @@ def predict():
     embed_mat = np.array(pd.read_csv('embedded_final.csv', sep=' '))
     vectors = []
     for n in test_title:
-        vectors.append(embed_mat[n])
+        vectors.append(embedded_final[n])
     vectors = [item for sublist in vectors for item in sublist]
     arr = np.array(vectors)
     final_vector = np.mean(arr, axis=0)
@@ -100,8 +101,11 @@ def predict():
     
     
     #  Predict with XGBoosting Regressor
-    score = xgb_b.predict(xgboost.DMatrix(X_test))
-    return render_template('index.html', score='Predicted score for the given Reddit post is: {}'.format(score ))
+    score = xgb.predict(X_test)
+    output=round(score[0],2)
+    
+    return render_template('index.html', prediction_text="Predicted score for the given Reddit post is: {}".format(output))
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
